@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Weather Dashboard - Real-time weather forecasts and alerts">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body id="app">
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner" aria-label="Loading weather data">
+        <div class="spinner"></div>
+        <p>Loading weather data...</p>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorContainer" class="error-container" role="alert" aria-live="polite">
+        <div class="error-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <div>
+                <h3>Something went wrong</h3>
+                <p id="errorMessage">Unable to fetch weather data. Please try again.</p>
+            </div>
+            <button id="retryBtn" class="retry-btn" aria-label="Retry fetching weather">
+                <i class="fas fa-redo"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <!-- Sidebar - Search & Favorites -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Search Section -->
+            <div class="search-section">
+                <h2 class="section-title">Search</h2>
+                <div class="search-box">
+                    <img src="assets/images/search.png" alt="Search" class="search-icon" />
+                    <input
+                        type="text"
+                        id="cityInput"
+                        placeholder="Search city..."
+                        aria-label="Search for a city">
+                    <button id="locationBtn" class="location-btn" aria-label="Use current location" title="Current Location">
+                        <img src="assets/images/location.png" alt="Location" class="location-icon" />
+                    </button>
+                </div>
+
+                <!-- Search Suggestions -->
+                <div id="suggestions" class="suggestions" role="listbox">
+                </div>
+
+                <!-- Recent Searches -->
+                <div class="recent-searches">
+                    <h3 class="subsection-title">Recent</h3>
+                    <div id="recentSearches" class="search-tags">
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div class="favorites-section">
+                    <h3 class="subsection-title">Favorites</h3>
+                    <div id="favoritesList" class="favorites-list">
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header with Date/Time -->
+            <header class="app-header">
+                <div class="greeting-section">
+                    <h1 id="greeting" class="greeting">Good Morning</h1>
+                    <p id="currentDateTime" class="current-time">Today at 10:30 AM</p>
+                </div>
+            </header>
+
+            <!-- Hero Section - Current Weather -->
+            <section class="hero-section" id="heroSection">
+                <div class="weather-backdrop"></div>
+
+                <!-- Current Weather Card -->
+                <article class="weather-card-main" role="region" aria-label="Current weather">
+                    <div class="weather-icon-large">
+                        <img id="weatherIconMain" src="assets/images/weather.avif" alt="Current weather icon" class="weather-main-icon" />
+                    </div>
+                    
+                    <div class="weather-info">
+                        <h2 id="cityName" class="city-name">Chandigarh</h2>
+                        <p id="weatherDescription" class="weather-description">Clear Sky</p>
+                        <div class="temperature-section">
+                            <span id="temperature" class="temperature">34°C</span>
+                            <div class="temp-range">
+                                <span id="maxTemp" class="max-temp">36°</span>
+                                <span class="temp-separator">/</span>
+                                <span id="minTemp" class="min-temp">28°</span>
+                            </div>
+                        </div>
+                        <p id="feelsLike" class="feels-like">Feels Like 35°C</p>
+                    </div>
+
+                    <button id="favoriteBtn" class="favorite-btn" aria-label="Add to favorites" title="Add to favorites">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </article>
+            </section>
+
+            <!-- Highlights Section -->
+            <section class="highlights-section" role="region" aria-label="Today's weather highlights">
+                <h2 class="section-title">Today's Highlights</h2>
+                
+                <div class="highlights-grid">
+                    <!-- Humidity -->
+                    <div class="highlight-card" role="region" aria-label="Humidity information">
+                        <div class="highlight-icon">
+                            <img src="assets/images/humidity.jpeg" alt="Humidity icon" class="icon-img" />
+                        </div>
+                        <h3>Humidity</h3>
+                        <p id="humidity" class="highlight-value">70%</p>
+                        <div id="humidityBar" class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Wind Speed -->
+                    <div class="highlight-card" role="region" aria-label="Wind speed information">
+                        <div class="highlight-icon">
+                            <img src="assets/images/wind.webp" alt="Wind icon" class="icon-img" />
+                        </div>
+                        <h3>Wind Speed</h3>
+                        <p id="wind" class="highlight-value">8 km/h</p>
+                        <p class="highlight-detail" id="windDirection">NW</p>
+                    </div>
+
+                    <!-- Pressure -->
+                    <div class="highlight-card" role="region" aria-label="Pressure information">
+                        <div class="highlight-icon">
+                            <img src="assets/images/pressure.jpg" alt="Pressure icon" class="icon-img" />
+                        </div>
+                        <h3>Pressure</h3>
+                        <p id="pressure" class="highlight-value">1013 hPa</p>
+                        <p class="highlight-detail" id="pressureDetail">Normal</p>
+                    </div>
+
+                    <!-- Visibility -->
+                    <div class="highlight-card" role="region" aria-label="Visibility information">
+                        <div class="highlight-icon">
+                            <img src="assets/images/visibility.webp" alt="Visibility icon" class="icon-img" />
+                        </div>
+                        <h3>Visibility</h3>
+                        <p id="visibility" class="highlight-value">10 km</p>
+                        <p class="highlight-detail">Excellent</p>
+                    </div>
+
+                    <!-- UV Index -->
+                    <div class="highlight-card" role="region" aria-label="UV index information">
+                        <div class="highlight-icon">
+                            <img src="assets/images/uv.jpg" alt="UV index icon" class="icon-img" />
+                        </div>
+                        <h3>UV Index</h3>
+                        <p id="uv" class="highlight-value">5</p>
+                        <p class="highlight-detail" id="uvLevel">Moderate</p>
+                    </div>
+
+                    <!-- Sunrise -->
+                    <div class="highlight-card" role="region" aria-label="Sunrise time">
+                        <div class="highlight-icon">
+                            <img src="assets/images/sunrise.jpeg" alt="Sunrise icon" class="icon-img" />
+                        </div>
+                        <h3>Sunrise</h3>
+                        <p id="sunrise" class="highlight-value">5:42 AM</p>
+                    </div>
+
+                    <!-- Sunset -->
+                    <div class="highlight-card" role="region" aria-label="Sunset time">
+                        <div class="highlight-icon">
+                            <img src="assets/images/sunset.jpg" alt="Sunset icon" class="icon-img" />
+                        </div>
+                        <h3>Sunset</h3>
+                        <p id="sunset" class="highlight-value">7:18 PM</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7-Day Forecast -->
+            <section class="forecast-section" role="region" aria-label="7-day forecast">
+                <h2 class="section-title">7-Day Forecast</h2>
+                <div id="forecastContainer" class="forecast-grid">
+                    <!-- Populated by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Air Quality Section -->
+            <section class="air-quality-section" role="region" aria-label="Air quality information">
+                <h2 class="section-title">Air Quality</h2>
+                <div class="air-quality-card">
+                    <div class="aqi-score">
+                        <span id="aqiValue" class="aqi-number">50</span>
+                        <span class="aqi-label">AQI</span>
+                    </div>
+                    <div class="aqi-info">
+                        <p id="aqiCategory" class="aqi-category">Good</p>
+                        <p class="aqi-description" id="aqiDescription">Air quality is satisfactory</p>
+                        <div class="aqi-bar">
+                            <div id="aqiFill" class="aqi-fill"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
