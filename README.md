@@ -5,6 +5,7 @@ A modern and responsive weather application that provides real-time weather info
 Tools and Technologies used:
 
 HTML/CSS
+Javascript
 
 🚀 Features
 
