@@ -1,6 +1,7 @@
 🌦️ Weather App
 
 A modern and responsive weather application that provides real-time weather information for any city worldwide. Built using HTML, CSS, JavaScript, and a weather API, the application displays current weather conditions with a clean and user-friendly interface.
+Tools and Technologies used:
 
 🚀 Features
 
